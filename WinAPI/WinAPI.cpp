@@ -209,12 +209,21 @@ void GetPhysicalDrivesInfo() {
 
         bool isSSD = IsSSD(hDevice);
 
-        cout << "Диск " << i << ":"<< 
-            "\n  Производитель: " << vendor <<
-            "\n  Модель: " << model << 
-            "\n  Тип: " << (isSSD ? "SSD" : "HDD") <<
-            "\n  Серийный номер: " << serial << 
-            "\n  Интерфейс: " << busType << endl;
+        if (vendor == "Unknown") {
+            cout << "Диск " << i << ":" <<
+                "\n  Модель: " << model <<
+                "\n  Тип: " << (isSSD ? "SSD" : "HDD") <<
+                "\n  Серийный номер: " << serial <<
+                "\n  Интерфейс: " << busType << endl;
+        }else {
+            cout << "Диск " << i << ":" <<
+                "\n  Производитель: " << vendor <<
+                "\n  Модель: " << model <<
+                "\n  Тип: " << (isSSD ? "SSD" : "HDD") <<
+                "\n  Серийный номер: " << serial <<
+                "\n  Интерфейс: " << busType << endl;
+        }
+
 
         DISK_GEOMETRY_EX diskGeometry;
         if (DeviceIoControl(hDevice, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, NULL, 0, &diskGeometry, sizeof(diskGeometry),
@@ -230,6 +239,7 @@ void GetPhysicalDrivesInfo() {
         cout << "----------------------------------------\n";
     }
 }
+
 void GetGPUInfo() {
     ComPtr<IDXGIFactory1> pFactory;
     HRESULT hr = CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&pFactory);
